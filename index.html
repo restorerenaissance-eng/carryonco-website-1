@@ -16,6 +16,9 @@
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
 
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'><rect width='36' height='36' fill='%23080604'/><circle cx='18' cy='18' r='17' stroke='%23D4A843' stroke-width='1.5' fill='none'/><rect x='11' y='14' width='14' height='12' rx='1.5' stroke='%23D4A843' stroke-width='1.4' fill='none'/><rect x='14' y='11' width='8' height='4' rx='1' stroke='%23D4A843' stroke-width='1.3' fill='none'/><line x1='11' y1='20' x2='25' y2='20' stroke='%23D4A843' stroke-width='1.3'/><circle cx='18' cy='20' r='1.8' fill='%23D4A843'/></svg>" />
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -622,9 +625,9 @@
       background-image: url('https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=2000&q=80');
       background-size: cover;
       background-position: center;
-      opacity: 0.2;
+      opacity: 0.5;
     }
-    .why-overlay { position: absolute; inset: 0; background: rgba(8,6,4,0.75); }
+    .why-overlay { position: absolute; inset: 0; background: rgba(8,6,4,0.50); }
     .why .container { position: relative; z-index: 2; }
     .why-header {
       margin-bottom: 64px;
@@ -1116,7 +1119,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 24px 64px 0;
+      padding: 24px 64px 40px;
       max-width: 1480px;
       margin: 0 auto;
       border-top: 1px solid rgba(240,236,228,0.06);
@@ -1187,7 +1190,7 @@
       .email-form input { border-right: 1px solid rgba(212,168,67,0.3); }
       .how-it-works, .email-strip { padding: 48px 28px; }
       .footer-grid { padding: 0 28px; }
-      .footer-bottom { flex-direction: column; gap: 16px; align-items: flex-start; padding: 24px 28px 0; }
+      .footer-bottom { flex-direction: column; gap: 16px; align-items: flex-start; padding: 24px 28px 40px; }
     }
 
     @media (max-width: 600px) {
@@ -1195,10 +1198,43 @@
       .footer-grid { grid-template-columns: 1fr; }
       .partner-logos-row { gap: 20px; }
     }
+
+    /* ─── STICKY CTA ───────────────────────────────── */
+    .sticky-cta {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      z-index: 999;
+      background: var(--gold);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 14px 24px;
+      border-radius: 2px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(12px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .sticky-cta.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    @media (max-width: 600px) {
+      .sticky-cta { bottom: 20px; right: 20px; padding: 12px 18px; font-size: 12px; }
+    }
   </style>
 </head>
 
 <body>
+
+<!-- ─── STICKY CTA BUTTON ─────────────────────────── -->
+<a href="#booking" class="sticky-cta" id="stickyCta">Plan My Trip →</a>
 
 <!-- ─── NAV ──────────────────────────────────────── -->
 <nav id="nav">
@@ -1259,6 +1295,124 @@
         <h3>Receive Your Complete Plan</h3>
         <p>A detailed, ready-to-book trip plan lands in your inbox. You book it yourself, on your timeline, at the prices I found.</p>
         <span class="how-time">Ready to book</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── BOOKING FORM ───────────────────────────────── -->
+<section class="booking" id="booking">
+  <div class="booking-bg"></div>
+  <div class="booking-overlay"></div>
+  <div class="container">
+    <div class="booking-header reveal">
+      <p class="section-label">Premium Concierge Service</p>
+      <h2>Tell Me Where You Want <em class="italic-gold">To Go.</em></h2>
+      <p>Drop your details — dream destinations, tight budgets, first-class expectations on a coach budget. I read every submission personally and respond within 24 hours.</p>
+    </div>
+
+    <div class="form-wrap" id="formWrap">
+      <form id="tripForm" onsubmit="handleSubmit(event)">
+        <div class="form-section">
+          <div class="form-section-title">Who I'm Planning For</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name *</label>
+              <input type="text" name="name" placeholder="Your first name" required />
+            </div>
+            <div class="form-group">
+              <label>Email Address *</label>
+              <input type="email" name="email" placeholder="your@email.com" required />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">The Trip</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Travel Dates *</label>
+              <input type="text" name="dates" placeholder="e.g. June 15 – July 1" required />
+            </div>
+            <div class="form-group">
+              <label>Destinations *</label>
+              <input type="text" name="destinations" placeholder="e.g. Italy + Croatia" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Type of Trip</label>
+              <select name="tripType">
+                <option value="">Select...</option>
+                <option>Solo Adventure</option>
+                <option>Couple / Romantic</option>
+                <option>Friend Group Trip</option>
+                <option>Family Vacation</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Travelers</label>
+              <select name="travelers">
+                <option value="">Select...</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3–4</option>
+                <option>5+</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Service *</label>
+            <select name="service" required>
+              <option value="">What do you need?</option>
+              <option>Flight + Stay Finder — from $59</option>
+              <option>Full Itinerary — from $149</option>
+              <option>Done-For-You Concierge — from $349</option>
+              <option>Not sure — help me decide</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Budget Per Person</div>
+          <div class="budget-tiles" id="budgetTiles">
+            <div class="budget-tile" onclick="selectBudget(this, 'Under $1,500')">
+              <div class="price">Under $1,500</div>
+              <div class="label">Smart Budget</div>
+            </div>
+            <div class="budget-tile" onclick="selectBudget(this, '$1,500–$2,500')">
+              <div class="price">$1,500–$2,500</div>
+              <div class="label">Sweet Spot</div>
+            </div>
+            <div class="budget-tile" onclick="selectBudget(this, '$2,500–$4,000')">
+              <div class="price">$2,500–$4,000</div>
+              <div class="label">Comfortable</div>
+            </div>
+            <div class="budget-tile" onclick="selectBudget(this, '$4,000+')">
+              <div class="price">$4,000+</div>
+              <div class="label">Premium</div>
+            </div>
+          </div>
+          <input type="hidden" name="budget" id="budgetValue" />
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Anything Else</div>
+          <div class="form-group">
+            <textarea name="notes" placeholder="Dream destinations, special occasions, travel restrictions, must-haves..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-submit">
+          <button type="submit" class="btn-submit">Let's Build This Trip →</button>
+          <p class="form-note">I'll respond personally within 24 hours. No templates, no fluff — ever.</p>
+        </div>
+      </form>
+
+      <div class="form-success" id="formSuccess">
+        <div style="font-size:32px;margin-bottom:16px;">✦</div>
+        <h3>You're In.</h3>
+        <p>I'll be in touch within 24 hours. Check your inbox — and your spam, just in case.</p>
       </div>
     </div>
   </div>
@@ -1529,124 +1683,6 @@
   </div>
 </section>
 
-<!-- ─── BOOKING FORM ───────────────────────────────── -->
-<section class="booking" id="booking">
-  <div class="booking-bg"></div>
-  <div class="booking-overlay"></div>
-  <div class="container">
-    <div class="booking-header reveal">
-      <p class="section-label">Premium Concierge Service</p>
-      <h2>Tell Me Where You Want <em class="italic-gold">To Go.</em></h2>
-      <p>Drop your details — dream destinations, tight budgets, first-class expectations on a coach budget. I read every submission personally and respond within 24 hours.</p>
-    </div>
-
-    <div class="form-wrap" id="formWrap">
-      <form id="tripForm" onsubmit="handleSubmit(event)">
-        <div class="form-section">
-          <div class="form-section-title">Who I'm Planning For</div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>First Name *</label>
-              <input type="text" name="name" placeholder="Your first name" required />
-            </div>
-            <div class="form-group">
-              <label>Email Address *</label>
-              <input type="email" name="email" placeholder="your@email.com" required />
-            </div>
-          </div>
-        </div>
-
-        <div class="form-section">
-          <div class="form-section-title">The Trip</div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Travel Dates *</label>
-              <input type="text" name="dates" placeholder="e.g. June 15 – July 1" required />
-            </div>
-            <div class="form-group">
-              <label>Destinations *</label>
-              <input type="text" name="destinations" placeholder="e.g. Italy + Croatia" required />
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Type of Trip</label>
-              <select name="tripType">
-                <option value="">Select...</option>
-                <option>Solo Adventure</option>
-                <option>Couple / Romantic</option>
-                <option>Friend Group Trip</option>
-                <option>Family Vacation</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Travelers</label>
-              <select name="travelers">
-                <option value="">Select...</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3–4</option>
-                <option>5+</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Service *</label>
-            <select name="service" required>
-              <option value="">What do you need?</option>
-              <option>Flight + Stay Finder — from $59</option>
-              <option>Full Itinerary — from $149</option>
-              <option>Done-For-You Concierge — from $349</option>
-              <option>Not sure — help me decide</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-section">
-          <div class="form-section-title">Budget Per Person</div>
-          <div class="budget-tiles" id="budgetTiles">
-            <div class="budget-tile" onclick="selectBudget(this, 'Under $1,500')">
-              <div class="price">Under $1,500</div>
-              <div class="label">Smart Budget</div>
-            </div>
-            <div class="budget-tile" onclick="selectBudget(this, '$1,500–$2,500')">
-              <div class="price">$1,500–$2,500</div>
-              <div class="label">Sweet Spot</div>
-            </div>
-            <div class="budget-tile" onclick="selectBudget(this, '$2,500–$4,000')">
-              <div class="price">$2,500–$4,000</div>
-              <div class="label">Comfortable</div>
-            </div>
-            <div class="budget-tile" onclick="selectBudget(this, '$4,000+')">
-              <div class="price">$4,000+</div>
-              <div class="label">Premium</div>
-            </div>
-          </div>
-          <input type="hidden" name="budget" id="budgetValue" />
-        </div>
-
-        <div class="form-section">
-          <div class="form-section-title">Anything Else</div>
-          <div class="form-group">
-            <textarea name="notes" placeholder="Dream destinations, special occasions, travel restrictions, must-haves..."></textarea>
-          </div>
-        </div>
-
-        <div class="form-submit">
-          <button type="submit" class="btn-submit">Let's Build This Trip →</button>
-          <p class="form-note">I'll respond personally within 24 hours. No templates, no fluff — ever.</p>
-        </div>
-      </form>
-
-      <div class="form-success" id="formSuccess">
-        <div style="font-size:32px;margin-bottom:16px;">✦</div>
-        <h3>You're In.</h3>
-        <p>I'll be in touch within 24 hours. Check your inbox — and your spam, just in case.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ─── CITY GUIDES ────────────────────────────────── -->
 <section class="journal" id="journal">
   <div class="container">
@@ -1819,6 +1855,33 @@
     const notes = data.get('notes') || '';
     window.location.href = `mailto:hello@carryonco.net?subject=New Trip Inquiry from ${encodeURIComponent(name)}&body=Name: ${encodeURIComponent(name)}%0AEmail: ${encodeURIComponent(email)}%0ADestinations: ${encodeURIComponent(dest)}%0AService: ${encodeURIComponent(service)}%0ANotes: ${encodeURIComponent(notes)}`;
   }
+
+  // Sticky CTA: show after scrolling past hero, hide when booking section is visible
+  (function() {
+    const cta = document.getElementById('stickyCta');
+    const booking = document.getElementById('booking');
+    if (!cta || !booking) return;
+
+    const bookingObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          cta.classList.remove('visible');
+        }
+      });
+    }, { threshold: 0.2 });
+    bookingObserver.observe(booking);
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY || window.pageYOffset;
+      const bookingRect = booking.getBoundingClientRect();
+      const bookingVisible = bookingRect.top < window.innerHeight && bookingRect.bottom > 0;
+      if (scrollY > 300 && !bookingVisible) {
+        cta.classList.add('visible');
+      } else {
+        cta.classList.remove('visible');
+      }
+    }, { passive: true });
+  })();
 </script>
 
 </body>
